@@ -59,11 +59,3 @@ jobs:
           with:
             github_token: ${{ secrets.GITHUB_TOKEN }}
             publish_dir: ./playwright-report
-
-        - name: Integrando los reportes
-          uses: dorny/test-reporter@v1
-          if: always()
-          with:
-            name: Playwright Tests
-            path: playwright-report/results.xml
-            reporter: jest-junit

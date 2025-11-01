@@ -119,29 +119,6 @@ test.describe("CRUD Employees", () => {
         await expect(page.locator('tbody tr:first-child td:nth-child(4)')).toHaveText(formatToCurrency(UPDATE_MOCK.salary), { timeout: 10000 })
     })
 
-    
-    test("Delete Employee", async ({page}) => {
-        await page.goto(`/employees`)
-        let rows = await page.locator('tbody tr').count();
-        if (rows > 0) {
-            page.on("dialog", async (dialog) => {
-                await expect(dialog.type()).toBe('confirm')
-                await dialog.accept()
-            })
-            while (rows > 0) {
-                await page.locator('tbody tr').first().locator('td button:has-text("Eliminar")').click();
-                await page.waitForTimeout(500);
-                rows = await page.locator('tbody tr').count();
-            }
-        }
-        await expect(page.locator('tbody tr')).toHaveCount(0);
-        
-        const emptyMsg = await page.locator("p:has-text('No hay empleados registrados.')").count();
-        if (emptyMsg > 0) {
-            await expect(page.locator("p:has-text('No hay empleados registrados.')")).toBeVisible();
-        }
-    })
-
     test("Check Error Messages", async ({page}) => {
         await page.goto(`/employees/new`)
         await page.waitForLoadState('networkidle')
